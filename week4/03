@@ -1,0 +1,46 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+bool is_palindrome(const string& s) {
+    for (int i = 0; i < s.length() / 2; ++i) {
+        if (s[i] != s[s.length() - i - 1]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+int palindrome_index(const string& s) {
+    if (is_palindrome(s)) {
+        return -1;
+    }
+    
+    int n = s.length();
+    for (int i = 0; i < n / 2; ++i) {
+        if (s[i] != s[n - i - 1]) {
+            if (is_palindrome(s.substr(0, i) + s.substr(i + 1))) {
+                return i;
+            } else if (is_palindrome(s.substr(0, n - i - 1) + s.substr(n - i))) {
+                return n - i - 1;
+            } else {
+                return -1;
+            }
+        }
+    }
+    return -1;
+}
+
+int main() {
+    int num_queries;
+    cin >> num_queries;
+    cin.ignore(); // Ignore the newline character
+    
+    for (int i = 0; i < num_queries; ++i) {
+        string query;
+        getline(cin, query);
+        cout << palindrome_index(query) << endl;
+    }
+    
+    return 0;
+}
